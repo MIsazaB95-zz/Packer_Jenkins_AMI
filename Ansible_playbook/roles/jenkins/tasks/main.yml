@@ -1,0 +1,51 @@
+---
+# tasks file
+
+- name: updating
+  apt:
+          name: '*'
+          update_cache: yes
+
+- name: install java 8
+  apt:
+          name: openjdk-8-jdk
+  
+- name: check java version
+  shell: java -version
+  register: version
+
+- name:
+  debug:
+          var: version.stdout
+
+- name: download jenkins key
+  apt_key:
+          url: https://pkg.jenkins.io/debian/jenkins.io.key
+          state: present
+
+- name: adding an entry to source.list
+  shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+- name: updating
+  apt:
+          name: '*'
+          update_cache: yes  
+
+- name: install jenkins
+  apt:
+          name: jenkins
+          state: present
+
+- name: start jenkins
+  systemd:
+          name: jenkins
+          state: started
+          enabled: yes
+
+- name: print init password jenkins
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: result
+
+- name: show jenkins password
+  debug:
+          var: result.stdout

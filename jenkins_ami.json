@@ -1,0 +1,40 @@
+{
+    "variables":{
+        "aws_access_key":"{{env `AWS_ACCESS_KEY_ID`}}",
+        "aws_secret_key":"{{env `AWS_SECRET_ACCESS_KEY`}}"        
+    },
+    "builders":[
+        {
+            "type":"amazon-ebs",
+            "access_key":"{{user `aws_access_key`}}",
+            "secret_key":"{{user `aws_secret_key`}}",
+            "region":"us-east-1",
+            "source_ami":"ami-07ebfd5b3428b6f4d",
+            "source_ami_filter":{
+                "owners":["099720109477"],
+                "most_recent":true
+            },
+            "instance_type":"t2.micro",
+            "ssh_username":"ubuntu",
+            "ami_name":"jenkins-ami"
+        }
+    ],
+    "provisioners":[
+        {
+            "type":"shell",
+            "script":"/home/devops/Documents/Git_Repositories/Packer_Jenkins_AMI/ansible.sh"
+        },
+        {
+            "type":"ansible-local",
+            "playbook_dir":"/home/devops/Documents/Git_Repositories/Packer_Jenkins_AMI/Ansible_playbook",
+            "playbook_file":"playbook.yml"
+        }
+    ],
+    "post-processors":[
+        {
+            "type":"manifest",
+            "output":"manifest.json"
+        }
+    ]
+
+}

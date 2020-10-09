@@ -1,0 +1,44 @@
+---
+# tasks file
+- name: update packages
+  apt:
+          update_cache: yes
+
+- name: kubectl latest version
+  shell: |
+          curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+
+- name: change kubectl permissions
+  file:
+          path: ./kubectl
+          mode: u+x,g+x,o+x
+
+- name: move kubectl executable to bin
+  command:  mv ./kubectl /usr/local/bin/kubectl
+
+- name: check kubectl client version
+  command: kubectl version --client
+  register: kubectl_version
+
+- name: checking kubectl version
+  debug:
+          var: kubectl_version.stdout
+
+- name: add helm official gpg key
+  apt_key:
+          url: https://baltocdn.com/helm/signing.asc
+          state: present
+
+- name: install helm with helm script
+  shell: |
+          curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+  args:
+          warn: no
+
+- name: check helm version
+  command: helm version --short
+  register: compose_version
+
+- name: checking the version of helm
+  debug:
+          var: compose_version.stdout

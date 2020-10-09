@@ -1,7 +1,6 @@
 ---
 # handlers file
-
-- name: update_packages
+- name: update
   apt:
-          name: '*'
           update_cache: yes
+  listen: apt update

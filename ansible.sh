@@ -12,3 +12,5 @@ ansible --version
 sudo apt-get install -y git
 pip install pip --upgrade
 pip install ansible --upgrade
+
+# Install aws cli v2

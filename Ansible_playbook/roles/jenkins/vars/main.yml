@@ -1,8 +1,8 @@
 ---
 #vars file
 jenkins_plugins:
-        - nodejs
         - ansible
+        - pipeline-maven
         - cloudbess-folder
         - antisamy-markup-formatter
         - build-name-setter
@@ -34,7 +34,6 @@ jenkins_plugins:
         - jenkins-multijob-plugin
         - parameterized-trigger
         - copyartifact
-        - bitbucket
         - clearcase
         - cvs
         - git
@@ -44,7 +43,6 @@ jenkins_plugins:
         - gitlab-plugin
         - p4
         - repo
-        - subversion
         - teamconcert
         - tfs
         - matrix-project
@@ -54,7 +52,7 @@ jenkins_plugins:
         - pam-auth
         - ldap
         - role-strategy
-        - active-directory
+        - amazon-ecr
         - email-ext
         - emailext-template
         - mailer

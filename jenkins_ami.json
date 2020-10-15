@@ -14,19 +14,19 @@
                 "owners":["099720109477"],
                 "most_recent":true
             },
-            "instance_type":"t2.micro",
+            "instance_type":"t3.medium",
             "ssh_username":"ubuntu",
-            "ami_name":"jenkins-ami"
+            "ami_name":"jenkins-springboot"
         }
     ],
     "provisioners":[
         {
             "type":"shell",
-            "script":"/home/devops/Documents/Git_Repositories/Packer_Jenkins_AMI/ansible.sh"
+            "script":"./ansible.sh"
         },
         {
             "type":"ansible-local",
-            "playbook_dir":"/home/devops/Documents/Git_Repositories/Packer_Jenkins_AMI/Ansible_playbook",
+            "playbook_dir":"./Ansible_playbook",
             "playbook_file":"playbook.yml"
         }
     ],

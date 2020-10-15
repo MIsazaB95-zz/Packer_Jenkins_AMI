@@ -44,7 +44,7 @@
           dest: /etc/default/jenkins
           insertafter: 'JENKINS_ARGS='
           regexp: 'JENKINS_ARGS=\"\$JENKINS_ARGS '
-          line: 'JENKINS_ARGS="--prefix=/jenkins"'
+          line: 'JENKINS_ARGS="--prefix="'
           state: present
 
 - name: ensure jenkins home /var/lib/jenkins exist
@@ -87,29 +87,46 @@
           port: 8080
           delay: 120
 
-- name: install plugins
-  jenkins_plugin:
-          name: "{{ item }}"
-          url_username: admin
-          url_password: "password"
-          state: latest
-          with_dependencies: yes
-  ignore_errors: true
-  with_items: "{{ jenkins_plugins }}"
+# - name: Initiate the fact
+#   set_fact:
+#           jenkins_restart_required: yes
 
-- name: restart server
-  reboot:
-          msg:  "Reboot initiated by Ansible"
-          connect_timeout: 5
-          reboot_timeout: 600
-          pre_reboot_delay: 0
-          post_reboot_delay: 30
-          test_command: whoami
-  notify: terraform
-          
+# - name: wait for jenkins to start
+#   uri:
+#           url: http://localhost:8080
+#           method: GET
+#           return_content: "yes"
+#           body_format: raw
+#           follow_redirects: "no"
+#           status_code: 200, 403
+#           timeout: 5
+#   register: jenkins_service_status
+#   retries: 60
+#   delay: 5
+#   until: (jenkins_service_status.status == 403 or jenkins_service_status.status == 200) and (jenkins_service_status.content.find("Please wait while") == -1)
+#   when: jenkins_restart_required
 
-- name: wait for jenkins to start
-  wait_for:
-          host: 127.0.0.1
-          port: 8080
-          delay: 120
+# - name: install plugins without a specific version
+#   jenkins_plugin:
+#           name: "{{ item }}"
+#           url_username: admin
+#           url_password: "password"
+#           state: latest
+#   register: my_jenkins_plugin_unversioned
+#   with_items: "{{ jenkins_plugins }}"
+#   ignore_errors: true
+
+# - name: wait for jenkins to start
+#   uri:
+#           url: http://localhost:8080/
+#           method: GET
+#           return_content: "yes"
+#           body_format: raw
+#           follow_redirects: "no"
+#           status_code: 200, 403
+#           timeout: 5
+#   register: jenkins_service_status
+#   retries: 60
+#   delay: 5
+#   until: (jenkins_service_status.status == 403 or jenkins_service_status.status == 200) and (jenkins_service_status.content.find("Please wait while") == -1)
+#   when: jenkins_restart_required

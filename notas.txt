@@ -1,0 +1,7 @@
+Sólo es necesario instalar jenkins, los plugins se deben instalar manual para este caso en particular.
+Plugins a instalar:
+Blue Ocean
+Amazon ECR plugin
+Docker plugin
+GitHub Integration Plugin
+GitHub Authentication plugin

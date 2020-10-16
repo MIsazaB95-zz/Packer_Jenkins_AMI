@@ -5,3 +5,7 @@ Amazon ECR plugin
 Docker plugin
 GitHub Integration Plugin
 GitHub Authentication plugin
+Store aws credentials (on manage credentials)
+on config system:
+Declarative Pipeline (Docker) with ecr endpoint and aws credentials
+GitHub: Specify another hook URL for GitHub configuration
